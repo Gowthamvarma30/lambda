@@ -1,0 +1,12 @@
+service: lambda
+
+provider:
+  name: aws
+  runtime: python3.x
+  stage: dev
+  region: us-west-1
+
+
+functions:
+  hello:
+    handler: src/handler.generate_random
