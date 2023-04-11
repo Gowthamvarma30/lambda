@@ -3,7 +3,7 @@ import logging
 import os
 
 
-def generate_random(event, context):
+def generateRandomNumber(event, context):
     default_log_args = {
         "level": logging.DEBUG if os.environ.get("DEBUG", False) else logging.INFO,
         "format": "%(asctime)s [%(levelname)s] %(name)s - %(message)s",
