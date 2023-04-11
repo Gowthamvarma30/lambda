@@ -1,20 +1,31 @@
-name: deploy-py-lambda
+name: Deploy Lambda
+
 on:
   push:
     branches:
       - main
-jobs:
-  build:
-    runs-on: ubuntu-latest
 
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
     steps:
-    - uses: actions/checkout@master
-    - name: Deploy code to Lambda
-      uses: mariamrf/py-lambda-action@v1.0.0
+
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
       with:
-        lambda_layer_arn: 'arn:aws:lambda:us-west-1:369978422581:layer:my-layer'
-        lambda_function_name: 'generate_random'
+        node-version: ${{ matrix.node-version }}
+
+    - name: serverless deploy
+      uses: serverless/github-action@master
+      with:
+        args: deploy
       env:
+        # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+        # or if using AWS credentials directly
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: 'us-west-1'

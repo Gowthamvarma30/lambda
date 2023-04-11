@@ -1,12 +1,13 @@
-service: lambda
+service: basic-serverless-lambda
 
 provider:
   name: aws
-  runtime: python3.x
+  runtime: nodejs12.x
   stage: dev
   region: us-west-1
 
-
 functions:
   hello:
-    handler: src/handler.generate_random
+    handler: src/handler.generateRandomNumber
+    timeout: 60 # seconds
+    memorySize: 128 # mb
